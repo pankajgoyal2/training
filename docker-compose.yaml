@@ -1,0 +1,21 @@
+version: '3.5'
+
+services:
+  webserver:
+    container_name: myweb
+    image: mywebserver:$ISOLATION_ID
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+      args:
+        - MY_VAR=${MY_VAR:-"BAT"}
+    volumes:
+      - ./html_file:/var/www/html
+    ports:
+      - "40:80"
+    command : |
+      bash -c "
+        service apache2 start
+        tail -f /dev/null
+      "
+
